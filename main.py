@@ -66,11 +66,20 @@ if telescope=='MUSE':
         flux_data = flux[0].data
         flux.close()
         Cx, Cy = gal_center(fnvel)
-        alldata = {'gname':gname,'velo_data':velo_data,'error_data':error_data,
-                   'flux_data':flux_data,'flcut':flcut,'rkpc':rkpc,'mask_size':msk_sz,
-                   'Cx':Cx,'Cy':Cy,'ylab':ylab,'xlab':xlab,'res':res,
-                   'xpl':xpl, 'xpu':xpu, 'ypl':ypl, 'ypu':ypu, 'cbfrac':cbfrac}
-        #plotter.plot_data(alldata, max_error, telescope, pltmap)
+        # setting up for plots
+        flux_cut = True
+        rand_mask = False
+        if flux_cut and rand_mask:
+            cuts = [msk_sz, flcut]
+        if flux_cut and not(rand_mask):
+            cuts = flcut
+        if not(flux_cut) and rand_mask:
+            cuts = msk_sz
+        # Choosing the type of mask to be applied to data, error cut is mandatory, although it barely has an effect
+        alldata = {'gname':gname,'velo_data':velo_data, 'error_data':error_data, 'flux_data':flux_data,
+                   'Cx':Cx,'Cy':Cy,'rkpc':rkpc,'res':res,'ylab':ylab,'xlab':xlab,
+                    'xpl':xpl, 'xpu':xpu, 'ypl':ypl, 'ypu':ypu, 'cbfrac':cbfrac}
+        plotter.plot_velo_data(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
     if pltmap=='flux':
         fnflux = 'inputs/'+sysparam['fluxmapfn']
         flcut = sysparam['flcut']
