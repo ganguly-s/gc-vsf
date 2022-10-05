@@ -43,5 +43,5 @@ def apply_mask(all_data, max_error, vrange, cuts, flux_cut, rand_mask):
     if flux_cut and not(rand_mask):
         flcut = cuts
         good_v = (velo_data < vrange) & (velo_data > -vrange) & (error_data < max_error) & (flux_data > flcut)
-    masked_v = np.ma.masked_array(velo_data, mask=~good_v)
-    return masked_v, len(velo_data[good_v])
+    
+    return good_v
