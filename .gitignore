@@ -1,2 +1,5 @@
 .DS_Store
 *.pyc
+# image folders 
+MUSE/velocity/
+MUSE/vsfplots/
