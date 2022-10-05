@@ -6,14 +6,16 @@ Created on Tue Sep 20 09:46:14 2022
 @author: sg
 """
 import numpy as np
-import inputs as inp
-import datamap_plotter as plotter
 from astropy.io import fits
 from astropy.wcs import WCS
 from astropy.utils.data import get_pkg_data_filename
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.wcs import utils
+import inputs as inp
+import datamap_plotter as plotter
+import datamap_mask as mask
+import datamap_cleaner as clean
 
 gname = '2A0335'
 telescope = 'MUSE'
@@ -52,7 +54,7 @@ if telescope=='MUSE':
         ypl, ypu = sysparam['ypl'], sysparam['ypu']
         cbfrac = sysparam['cbfrac']
         one_third, half = sysparam['one_third'], sysparam['half']
-        vsfyl, vsfyu = sysparam['vsfyl'], sysparam['vsfyu']
+        vsfyl, vsfyu, vsfbin = sysparam['vsfyl'], sysparam['vsfyu'], sysparam['vsfbin']
         histulim, sepbin = sysparam['histulim'], sysparam['sepbin']
         res = res*0.2  # constant sampling size is 0.2"
         # data extraction and plotting
@@ -68,7 +70,7 @@ if telescope=='MUSE':
         Cx, Cy = gal_center(fnvel)
         # setting up for plots
         flux_cut = True
-        rand_mask = False
+        rand_mask = True
         if flux_cut and rand_mask:
             cuts = [msk_sz, flcut]
         if flux_cut and not(rand_mask):
@@ -80,6 +82,13 @@ if telescope=='MUSE':
                    'Cx':Cx,'Cy':Cy,'rkpc':rkpc,'res':res,'ylab':ylab,'xlab':xlab,
                     'xpl':xpl, 'xpu':xpu, 'ypl':ypl, 'ypu':ypu, 'cbfrac':cbfrac}
         plotter.plot_velo_data(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
+        # good_v = mask.apply_mask(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
+        # alldata['good_v'] = good_v
+        # alldata['telescope'] = telescope
+        # alldata['one_third'], alldata['half'] =  one_third, half
+        # alldata['vsfyl'], alldata['vsfyu'], alldata['vsfbin'] = vsfyl, vsfyu, vsfbin
+        # clean.calc_vsf(alldata)
+        plotter.vsf_plotter(gname, telescope, vsfyl, vsfyu, one_third, half)
     if pltmap=='flux':
         fnflux = 'inputs/'+sysparam['fluxmapfn']
         flcut = sysparam['flcut']
