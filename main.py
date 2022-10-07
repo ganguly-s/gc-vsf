@@ -70,7 +70,7 @@ if telescope=='MUSE':
         Cx, Cy = gal_center(fnvel)
         # setting up for plots
         flux_cut = True
-        rand_mask = True
+        rand_mask = False
         if flux_cut and rand_mask:
             cuts = [msk_sz, flcut]
         if flux_cut and not(rand_mask):
