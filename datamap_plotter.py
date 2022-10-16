@@ -91,7 +91,34 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
     plt.tight_layout()
     #plt.savefig(maskmap)
     plt.show()
+    
     # single velocity map for the paper
+    fig, ax = plt.subplots(nrows=1,ncols=1,figsize = (10,8)) 
+    ax.plot(Cx, Cy, marker="X", color="k", markersize=10,linestyle="None")
+    r = rkpc/res
+    circle= plt.Circle((Cx, Cy), radius= r, color='k', ls='--', fill=False)
+    ax.add_artist(circle)
+    vminimum = np.nanmin(velo_plot)
+    vmaximum = np.nanmax(velo_plot) 
+    im = ax.imshow(velo_plot, cmap="Spectral_r")
+    cb=plt.colorbar(im, ax=ax,fraction=cbfrac, pad=0.04)
+    cb.ax.tick_params(axis='y', direction='in')
+    cb.set_label("line-of-sight velocity (km/s)")
+    ax.set_xlim(xpl/res,xpu/res)
+    ax.set_ylim(ypu/res,ypl/res)
+    ax.set_xticks(x_locs)
+    ax.set_yticks(y_locs)
+    ax.set_xticklabels(x_labels)
+    ax.set_yticklabels(y_labels)
+    ax.set_xlabel("x (kpc)")
+    ax.invert_yaxis()
+    circ = plt.scatter([],[], ls='--',edgecolor='k',facecolor='none',label='r = %d kpc'%rkpc)
+    ax.legend(handles=[circ],loc="upper left", prop={'size': 22},frameon=False)
+    ax.set_ylabel("y (kpc)")
+    plt.suptitle(gname, size=24)
+    plt.tight_layout()
+    #plt.savefig(velomap)
+    plt.show()
 
     return
 
