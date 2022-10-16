@@ -81,14 +81,16 @@ if telescope=='MUSE':
         alldata = {'gname':gname,'velo_data':velo_data, 'error_data':error_data, 'flux_data':flux_data,
                    'Cx':Cx,'Cy':Cy,'rkpc':rkpc,'res':res,'ylab':ylab,'xlab':xlab,
                     'xpl':xpl, 'xpu':xpu, 'ypl':ypl, 'ypu':ypu, 'cbfrac':cbfrac}
-        plotter.plot_velo_data(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
+        #plotter.plot_velo_data(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
         # good_v = mask.apply_mask(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
         # alldata['good_v'] = good_v
         # alldata['telescope'] = telescope
         # alldata['one_third'], alldata['half'] =  one_third, half
         # alldata['vsfyl'], alldata['vsfyu'], alldata['vsfbin'] = vsfyl, vsfyu, vsfbin
         # clean.calc_vsf(alldata)
-        plotter.vsf_plotter(gname, telescope, vsfyl, vsfyu, one_third, half)
+        #plotter.vsf_plotter(gname, telescope, vsfyl, vsfyu, one_third, half)
+        pars1, stdevs1, pars2, stdevs2 = mask.brokenpowerlaw(telescope,gname,0.8,3)
+        plotter.bplplotter(pars1,stdevs1,pars2,stdevs2)
     if pltmap=='flux':
         fnflux = 'inputs/'+sysparam['fluxmapfn']
         flcut = sysparam['flcut']
