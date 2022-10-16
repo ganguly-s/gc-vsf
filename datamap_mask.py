@@ -45,6 +45,8 @@ def apply_mask(all_data, max_error, vrange, cuts, flux_cut, rand_mask):
     if flux_cut and not(rand_mask):
         flcut = cuts
         good_v = (velo_data < vrange) & (velo_data > -vrange) & (error_data < max_error) & (flux_data > flcut)
+    if not(flux_cut) and not(rand_mask):
+        good_v = (velo_data < vrange) & (velo_data > -vrange) & (error_data < max_error)
     
     return good_v
 
@@ -86,7 +88,7 @@ def brokenpowerlaw(telescope,gname,r1,r2):
 
         pars2, cov2 = curve_fit(f=power_law, xdata=np.log10(distspec), ydata=np.log10(vsfspec), p0=[10., 0.33])
         stdevs2 = np.sqrt(np.diag(cov2))
-    else
+    else:
         pars2,stdevs2 = [], []
 
     return pars1,stdevs1,pars2,stdevs2

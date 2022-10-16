@@ -61,7 +61,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([0,10,20,30]), 'xlab':np.array([10,20,30]), 
                            'msk_sz':1000000, 'rkpc':3, 'xpl':0, 'xpu':30, 'ypl':5, 'ypu':35, 
                            'cbfrac':0.040, 'one_third':60, 'half':33, 'vsfyl':6, 'vsfyu':300, 
-                           'histulim':80, 'sepbin':200}
+                           'histulim':80, 'sepbin':200, 'fluxmapfn':'A3581_Halpha_flux.fits',
+                           'flcut':150,'vsfbin':200}
             # if pltmap=='flux':
                 
         if gname=='PKS0745':

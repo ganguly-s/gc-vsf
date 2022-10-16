@@ -45,10 +45,9 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
     # velocity map with and without any mask
     fig, ax = plt.subplots(nrows=1,ncols=2,figsize = (16,7)) 
     for axs in ax:
-        axs.plot(Cx, Cy, marker="X", color="k", markersize=10,
-              linestyle="None", label="Black Hole Position")
+        axs.plot(Cx, Cy, marker="X", color="k", markersize=10,linestyle="None")
         r = rkpc/res
-        circle= plt.Circle((Cx, Cy), radius= r, color='k', fill=False)
+        circle= plt.Circle((Cx, Cy), radius= r, color='k', ls='--', fill=False)
         axs.add_artist(circle)
     vminimum = np.nanmin(velo_plot)
     vmaximum = np.nanmax(velo_plot) 
@@ -73,7 +72,8 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
         axs.set_xlabel("x (kpc)")
         axs.invert_yaxis()
         axs.tick_params(which='both',direction='in')
-    ax[0].legend(loc="upper left", prop={'size': 22})
+    circ = plt.scatter([],[], ls='--',edgecolor='k',facecolor='none',label='r = %d kpc'%rkpc)
+    ax[0].legend(handles=[circ],loc="upper left", prop={'size': 22},frameon=False)
     ax[0].set_ylabel("y (kpc)")
     totdata = len(all_data['velo_data'][~np.isnan(all_data['velo_data'])])
     usedata = len(all_data['velo_data'][good_v])
@@ -85,9 +85,14 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
         ax[1].set_title('random mask (%d) = %d'%(cuts,usedata), size=20)
     if flux_cut and not(rand_mask):
         ax[1].set_title('flux cut (%d) = %d'%(cuts,usedata), size=20)
+    if not(flux_cut) and not(rand_mask):
+        ax[1].set_title('error cut only = %d'%usedata,size=20)
     fig.suptitle(gname, size=24)
     plt.tight_layout()
-    plt.savefig(maskmap)
+    #plt.savefig(maskmap)
+    plt.show()
+    # single velocity map for the paper
+
     return
 
 #def plot_flux_data():
