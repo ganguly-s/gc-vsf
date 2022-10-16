@@ -51,7 +51,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([0,10,20,30,40,50,60,70,80]), 'xlab':np.array([20,30,40,50,60,70]), 
                            'msk_sz':1000000, 'rkpc':8, 'xpl':20, 'xpu':70, 'ypl':0, 'ypu':80, 
                            'cbfrac':0.040, 'one_third':55, 'half':33, 'vsfyl':10, 'vsfyu':300, 
-                           'histulim':80, 'sepbin':200}
+                           'histulim':80, 'sepbin':200,'fluxmapfn':'A1795_Halpha_flux.fits',
+                           'flcut':250,'vsfbin':200}
             # if pltmap=='flux':
         if gname=='A3581':
             if pltmap=='velocity':

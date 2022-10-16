@@ -67,10 +67,6 @@ def brokenpowerlaw(telescope,gname,r1,r2):
         if dist[i]>r1:
             b1 = i
             break
-    for i in range(b1,len(dist)):
-        if dist[i]>r2:
-            b2 = i
-            break
     
     # fitting upto the first break
     distspec = dist[0:b1+1]
@@ -80,10 +76,17 @@ def brokenpowerlaw(telescope,gname,r1,r2):
     stdevs1 = np.sqrt(np.diag(cov1))
 
     # fitting from first break upto the viable peak
-    distspec = dist[b1:b2+1]
-    vsfspec = vsf[b1:b2+1]
+    if r2!=0: # for single power law, it is
+        for i in range(b1,len(dist)):
+            if dist[i]>r2:
+                b2 = i
+                break
+        distspec = dist[b1:b2+1]
+        vsfspec = vsf[b1:b2+1]
 
-    pars2, cov2 = curve_fit(f=power_law, xdata=np.log10(distspec), ydata=np.log10(vsfspec), p0=[10., 0.33])
-    stdevs2 = np.sqrt(np.diag(cov2))
+        pars2, cov2 = curve_fit(f=power_law, xdata=np.log10(distspec), ydata=np.log10(vsfspec), p0=[10., 0.33])
+        stdevs2 = np.sqrt(np.diag(cov2))
+    else
+        pars2,stdevs2 = [], []
 
     return pars1,stdevs1,pars2,stdevs2

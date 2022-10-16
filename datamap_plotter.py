@@ -139,3 +139,52 @@ def vsf_plotter(gname,telescope,vsfyl,vsfyu,one_third,half):
     plt.tick_params(which='both',direction='in')
     plt.title(gname, size=24)
     plt.savefig(fnvsfall)
+
+def bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,stdevs2,b1,b2):
+    impath = telescope+'/vsffits/'+gname+'/'
+    if not os.path.exists(telescope+'/'):
+        os.mkdir(telescope+'/')
+    if not os.path.exists(telescope+'/vsffits/'):
+        os.mkdir(telescope+'/vsffits/')
+    if not os.path.exists(telescope+'/vsffits/'+gname+'/'):
+        os.mkdir(telescope+'/vsffits/'+gname+'/')
+    datpath = telescope+'/vsfdat/'+gname+'/'
+    fnvsfall = impath+gname+'_allvsf.png'
+    fnvsfallnpz = datpath+gname+'_allvsf.npz'
+
+    vsfdata= np.load(fnvsfallnpz)
+    rkpc = vsfdata['rkpc']
+    dist_array = vsfdata['dist_array']
+    dist_array_kpc = vsfdata['dist_array_kpc']
+    v_diff_mean_smooth = vsfdata['v_diff_mean_smooth']
+
+    y_expect = dist_array**(1.0/3)*one_third
+    y_expect2 = dist_array**(1.0/2)*half
+    
+    plt.figure(figsize=(10, 8))
+    plt.loglog(dist_array_kpc, y_expect, "k--", label="1/3")
+    plt.loglog(dist_array_kpc, y_expect2, "m-.", label="1/2")
+    plt.loglog(dist_array_kpc, v_diff_mean_smooth, marker="o",linestyle="None", markersize=4, color="C0",label=gname+' All')
+
+    for i in range(len(dist_array_kpc)):
+        if dist_array_kpc[i]>b1:
+            distspec = dist_array_kpc[0:i+1]
+            break
+    plt.loglog(distspec, 10**(pars1[0]+pars1[1]*np.log10(distspec)), 'x', color='C3',markersize=4, label=r'$\alpha_1$ = %.2f $\pm$ %.3f'%(pars1[1],stdevs1[1]))
+    if b2!=0:
+        for j in range(i,len(dist_array_kpc)):
+            if dist_array_kpc[j]>b2:
+                distspec = dist_array_kpc[i:j+1]
+                break
+        plt.loglog(distspec, 10**(pars2[0]+pars2[1]*np.log10(distspec)), 'x', color='C2',markersize=4, label=r'$\alpha_2$ = %.2f $\pm$ %.3f'%(pars2[1],stdevs2[1]))
+    plt.xlabel("separation (kpc)")
+    plt.ylabel(r"$|\delta v|\, \rm (km/s)$")
+    plt.legend(loc="lower right", prop={'size': 22})
+    plt.ylim(vsfyl, vsfyu)
+    plt.grid()
+    plt.tick_params(which='both',direction='in')
+    plt.title(gname, size=24)
+    plt.savefig(fnvsfall)
+    plt.show()
+    
+    return
