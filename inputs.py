@@ -18,7 +18,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ra':'12:48:49.16', 'dec':'-41:18:40.9', 'res':0.208, 'nx':359, 'ny':362,
                            'ylab':np.array([5,10,15]), 'xlab':np.array([0,5,10,15]), 'msk_sz':50000,
                            'rkpc':2, 'xpl':0, 'xpu':15, 'ypl':0, 'ypu':15, 'cbfrac':0.040, 'one_third':42, 
-                           'half':28, 'vsfyl':7, 'vsfyu':200, 'histulim':80, 'sepbin':300}
+                           'half':28, 'vsfyl':7, 'vsfyu':200, 'histulim':80, 'sepbin':300,
+                           'fluxmapfn':'Centaurus_flux.fits','flcut':250,'vsfbin':200}
             # if pltmap=='flux':
         if gname=='Hydra-A':
             if pltmap=='velocity':
@@ -27,7 +28,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([25,30,40,50]), 'xlab':np.array([20,30,40,50]), 
                            'msk_sz':1000000, 'rkpc':5, 'xpl':20, 'xpu':50, 'ypl':25, 'ypu':55, 
                            'cbfrac':0.040, 'one_third':88, 'half':55, 'vsfyl':10, 'vsfyu':400, 
-                           'histulim':80, 'sepbin':300}
+                           'histulim':80, 'sepbin':300, 'fluxmapfn':'Hydra-A_Ha_flux.fits',
+                           'flcut':250,'vsfbin':200}
             # if pltmap=='flux':
         if gname=='2A0335':
             if pltmap=='velocity':
@@ -72,7 +74,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([60,70,80,90,100]), 'xlab':np.array([55,70,80,90,100,110]), 
                            'msk_sz':1000000, 'rkpc':3, 'xpl':55, 'xpu':110, 'ypl':55, 'ypu':100, 
                            'cbfrac':0.038, 'one_third':35, 'half':25, 'vsfyl':9, 'vsfyu':150, 
-                           'histulim':80, 'sepbin':200}
+                           'histulim':80, 'sepbin':200, 'fluxmapfn':'pks0745_Halpha_flux.fits',
+                           'flcut':250,'vsfbin':200}
             # if pltmap=='flux':
         if gname=='R0821':
             if pltmap=='velocity':
@@ -81,7 +84,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([65,75,85]), 'xlab':np.array([70,80,90,100]), 
                            'msk_sz':1000000, 'rkpc':5, 'xpl':65, 'xpu':100, 'ypl':65, 'ypu':90, 
                            'cbfrac':0.033, 'one_third':42, 'half':28, 'vsfyl':7, 'vsfyu':125, 
-                           'histulim':80, 'sepbin':100}
+                           'histulim':80, 'sepbin':100, 'fluxmapfn':'R0821_Halpha_flux.fits',
+                           'flcut':250,'vsfbin':100}
             # if pltmap=='flux':
         if gname=='R1539':
             if pltmap=='velocity':
@@ -90,7 +94,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([20,40,60,80,100]), 'xlab':np.array([0,20,40,60,80,100]), 
                            'msk_sz':10000, 'rkpc':15, 'xpl':0, 'xpu':100, 'ypl':0, 'ypu':110, 
                            'cbfrac':0.033, 'one_third':37, 'half':20, 'vsfyl':7, 'vsfyu':300, 
-                           'histulim':80, 'sepbin':100}
+                           'histulim':80, 'sepbin':100, 'fluxmapfn':'R1539_Halpha_flux.fits',
+                           'flcut':250,'vsfbin':200}
             # if pltmap=='flux':
         if gname=='S1101':
             if pltmap=='velocity':
@@ -99,7 +104,8 @@ def get_sys_params(gname, telescope, pltmap):
                            'ylab':np.array([30,40,50,60,70]), 'xlab':np.array([30,40,50,60]), 
                            'msk_sz':1000000, 'rkpc':5, 'xpl':25, 'xpu':60, 'ypl':25, 'ypu':80, 
                            'cbfrac':0.040, 'one_third':45, 'half':25, 'vsfyl':7, 'vsfyu':200, 
-                           'histulim':80, 'sepbin':200}
+                           'histulim':80, 'sepbin':200, 'fluxmapfn':'S1101_Halpha_flux.fits',
+                           'flcut':250,'vsfbin':200}
             # if pltmap=='flux':
     if telescope=='ALMA':
         if gname=='Centaurus':
