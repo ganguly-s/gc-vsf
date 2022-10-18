@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
 import datamap_mask as mask
+import inputs as inp
 
 newparams = {'font.family':'serif', 'axes.labelsize': 24, 'axes.linewidth': 1, 
               'lines.linewidth': 2, 'figure.figsize': (8, 6),
@@ -90,7 +91,7 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
         ax[1].set_title('error cut only = %d'%usedata,size=20)
     fig.suptitle(gname, size=24)
     plt.tight_layout()
-    #plt.savefig(maskmap)
+    plt.savefig(maskmap)
     plt.show()
     
     # single velocity map for the paper
@@ -113,30 +114,44 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
     ax.set_yticklabels(y_labels)
     ax.set_xlabel("x (kpc)")
     ax.invert_yaxis()
+    ax.tick_params(which='both',direction='in')
     circ = plt.scatter([],[], ls='--',edgecolor='k',facecolor='none',label='r = %d kpc'%rkpc)
     ax.legend(handles=[circ],loc="upper left", prop={'size': 22},frameon=False)
     ax.set_ylabel("y (kpc)")
     plt.suptitle(gname, size=24)
     plt.tight_layout()
-    #plt.savefig(velomap)
+    plt.savefig(velomap)
     plt.show()
 
     return
 
 def xray_plotter(gname):
     impath = '../X-ray images/'
-    fn = impath+gname
+    outpath = 'Chandra/'
+    if not os.path.exists(outpath):
+        os.mkdir(outpath)
+    outpath += gname+'_xray.pdf'
+    fn = impath+inp.get_xray_file(gname)
     xray = fits.open(fn)
     xray_data = xray[0].data
     xray.close()
     fig, ax = plt.subplots(nrows=1,ncols=1,figsize = (10,8)) 
     iminimum = np.nanmin(xray_data)
     imaximum = np.nanmax(xray_data)
-    im = ax.imshow(xray_data,vmin=iminimum, vmax=imaximum, cmap="Greys")
-    cb = plt.colorbar(im, ax=ax,fraction=0.040, pad=0.04)
-    plt.suptitle(gname, size=24)
+    print(iminimum, imaximum)
+    im = ax.imshow(xray_data,vmin=iminimum, vmax=imaximum, cmap="Spectral_r")
+    #ax.set_xlabel("x (kpc)")
+    #ax.set_ylabel("y (kpc)")
+    ax.set_xlim(1500,2500)
+    ax.set_ylim(2000,3000)
+    ax.invert_yaxis()
+    ax.tick_params(which='both',direction='in')
+    cb = plt.colorbar(im, ax=ax,fraction=0.040, pad=0.1, orientation = 'horizontal')
+    cb.ax.tick_params(axis='x', direction='in')
+    #cb.set_label("line-of-sight velocity (km/s)")
+    plt.title(gname, size=24)
     plt.tight_layout()
-    #plt.savefig(velomap)
+    plt.savefig(outpath)
     plt.show()
 
 #def plot_flux_data():

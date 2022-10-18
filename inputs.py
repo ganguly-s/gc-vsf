@@ -11,8 +11,25 @@ from astropy.utils.data import get_pkg_data_filename
 from astropy.io import fits
 
 def get_xray_file(gname):
+    if gname=='2A0335':
+        fn = '2A0335_0.5-2.0_flux.fits'
+    if gname=='Centaurus':
+        fn = 'Centaurus_0.5-2.0_flux.fits'
     if gname=='A1795':
         fn = 'A1795_0.5-2.0_flux.fits'
+    if gname=='A3581':
+        fn = 'A3581_0.5-2.0_flux.fits'
+    if gname=='Hydra-A':
+        fn = 'Hydra_A_0.5-2.0_flux.fits'
+    if gname=='PKS0745':
+        fn = 'PKS0745_0.5-2.0_flux.fits'
+    if gname=='R0821':
+        fn = 'RXJ0821_0.5-2.0_flux.fits'
+    if gname=='R1539':
+        fn = 'RXJ1539_0.5-2.0_flux.fits'
+    if gname=='S1101':
+        fn = 'AS1101_0.5-2.0_flux.fits'
+
     return fn
 
 def get_sys_params(gname, telescope, pltmap):

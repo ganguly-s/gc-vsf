@@ -17,7 +17,7 @@ import datamap_plotter as plotter
 import datamap_mask as mask
 import datamap_cleaner as clean
 
-gname = 'A1795'
+gname = '2A0335'
 telescope = 'MUSE'
 # telescope = 'ALMA'
 pltmap = 'velocity'
@@ -69,7 +69,7 @@ if telescope=='MUSE':
         flux.close()
         Cx, Cy = gal_center(fnvel)
         # setting up for plots
-        flux_cut = True
+        flux_cut = False
         rand_mask = False
         if flux_cut and rand_mask:
             cuts = [msk_sz, flcut]
@@ -95,7 +95,7 @@ if telescope=='MUSE':
         #b1, b2 = 2.5, 5    
         #pars1, stdevs1, pars2, stdevs2 = mask.brokenpowerlaw(telescope,gname,b1,b2)
         #plotter.bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,stdevs2,b1,b2)
-        plotter.xray_plotter(inp.get_xray_file(gname))
+        plotter.xray_plotter(gname)
     if pltmap=='flux':
         fnflux = 'inputs/'+sysparam['fluxmapfn']
         flcut = sysparam['flcut']
