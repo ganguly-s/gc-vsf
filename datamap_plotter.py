@@ -196,7 +196,7 @@ def bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,st
     plt.figure(figsize=(10, 8))
     plt.loglog(dist_array_kpc, y_expect, "k--", label="1/3")
     plt.loglog(dist_array_kpc, y_expect2, "m-.", label="1/2")
-    plt.loglog(dist_array_kpc, v_diff_mean_smooth, marker="o",linestyle="None", markersize=4, color="C0",label=gname+' All')
+    plt.loglog(dist_array_kpc, v_diff_mean_smooth, marker="o",linestyle="None", markersize=4, color="C0",label=gname+r' All, $b_1$ = %.2f'%b1)
 
     for i in range(len(dist_array_kpc)):
         if dist_array_kpc[i]>b1:
@@ -211,7 +211,7 @@ def bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,st
         plt.loglog(distspec, 10**(pars2[0]+pars2[1]*np.log10(distspec)), 'x', color='C2',markersize=4, label=r'$\alpha_2$ = %.2f $\pm$ %.3f'%(pars2[1],stdevs2[1]))
     plt.xlabel("separation (kpc)")
     plt.ylabel(r"$|\delta v|\, \rm (km/s)$")
-    plt.legend(loc="lower right", prop={'size': 22})
+    plt.legend(loc="lower right", prop={'size': 20})
     plt.ylim(vsfyl, vsfyu)
     plt.grid()
     plt.tick_params(which='both',direction='in')
