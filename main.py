@@ -17,7 +17,7 @@ import datamap_plotter as plotter
 import datamap_mask as mask
 import datamap_cleaner as clean
 
-gname = 'S1101'
+gname = 'A1795'
 telescope = 'MUSE'
 # telescope = 'ALMA'
 pltmap = 'velocity'
@@ -90,11 +90,12 @@ if telescope=='MUSE':
         # alldata['one_third'], alldata['half'] =  one_third, half
         # alldata['vsfyl'], alldata['vsfyu'], alldata['vsfbin'] = vsfyl, vsfyu, vsfbin
         # clean.calc_vsf(alldata)
-        plotter.vsf_plotter(gname, telescope, vsfyl, vsfyu, one_third, half)
+        #plotter.vsf_plotter(gname, telescope, vsfyl, vsfyu, one_third, half)
         #b1, b2 = [1.5,0.3,1,0.5,2.2,2,2.5,3], [10,1,4,3,4,5.5,10,12]
-        b1, b2 = 2.5, 5    
-        pars1, stdevs1, pars2, stdevs2 = mask.brokenpowerlaw(telescope,gname,b1,b2)
-        plotter.bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,stdevs2,b1,b2)
+        #b1, b2 = 2.5, 5    
+        #pars1, stdevs1, pars2, stdevs2 = mask.brokenpowerlaw(telescope,gname,b1,b2)
+        #plotter.bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,stdevs2,b1,b2)
+        plotter.xray_plotter(inp.get_xray_file(gname))
     if pltmap=='flux':
         fnflux = 'inputs/'+sysparam['fluxmapfn']
         flcut = sysparam['flcut']

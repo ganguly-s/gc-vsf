@@ -10,6 +10,11 @@ from astropy.wcs import WCS
 from astropy.utils.data import get_pkg_data_filename
 from astropy.io import fits
 
+def get_xray_file(gname):
+    if gname=='A1795':
+        fn = 'A1795_0.5-2.0_flux.fits'
+    return fn
+
 def get_sys_params(gname, telescope, pltmap):
     if telescope=='MUSE':
         if gname=='Centaurus':

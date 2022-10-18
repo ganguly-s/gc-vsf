@@ -8,6 +8,7 @@ Created on Wed Sep 21 07:37:04 2022
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from astropy.io import fits
 import datamap_mask as mask
 
 newparams = {'font.family':'serif', 'axes.labelsize': 24, 'axes.linewidth': 1, 
@@ -121,6 +122,22 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
     plt.show()
 
     return
+
+def xray_plotter(gname):
+    impath = '../X-ray images/'
+    fn = impath+gname
+    xray = fits.open(fn)
+    xray_data = xray[0].data
+    xray.close()
+    fig, ax = plt.subplots(nrows=1,ncols=1,figsize = (10,8)) 
+    iminimum = np.nanmin(xray_data)
+    imaximum = np.nanmax(xray_data)
+    im = ax.imshow(xray_data,vmin=iminimum, vmax=imaximum, cmap="Greys")
+    cb = plt.colorbar(im, ax=ax,fraction=0.040, pad=0.04)
+    plt.suptitle(gname, size=24)
+    plt.tight_layout()
+    #plt.savefig(velomap)
+    plt.show()
 
 #def plot_flux_data():
 def vsf_plotter(gname,telescope,vsfyl,vsfyu,one_third,half):
