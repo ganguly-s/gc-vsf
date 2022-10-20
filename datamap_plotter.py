@@ -9,6 +9,9 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
+from astropy.wcs import WCS
+from astropy.utils.data import get_pkg_data_filename
+import matplotlib.transforms as tfrms
 import datamap_mask as mask
 import inputs as inp
 
@@ -125,25 +128,92 @@ def plot_velo_data(all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=T
 
     return
 
-def xray_plotter(gname):
+def velo_data_panel(fn,all_data, max_error, vrange, cuts, flux_cut=True, rand_mask=True):
+    filename = get_pkg_data_filename(fn)
+    hdu = fits.open(filename)[0]
+    wcs = WCS(hdu.header)
+    # extracting plot specifications
+    Cx, Cy = all_data['Cx'], all_data['Cy']
+    rkpc, res = all_data['rkpc'], all_data['res']
+    gname = all_data['gname']
+    ylab, xlab = all_data['ylab'], all_data['xlab']
+    xpl, xpu, ypl, ypu, cbfrac, hcbfrac = all_data['xpl'], all_data['xpu'], all_data['ypl'], all_data['ypu'], all_data['cbfrac'], all_data['hcbfrac']
+    # saving the images
+    path0 = 'MUSE/velocity/'
+    path = path0+gname+'/'
+    if not os.path.exists('MUSE/'):
+        os.mkdir('MUSE/')
+    if not os.path.exists(path0):
+        os.mkdir(path0)
+    if not os.path.exists(path):
+        os.mkdir(path)
+    maskmap = path+gname+'_vpanel.pdf'
+    # obtaining masked data for plotting
+    good_v = mask.apply_mask(all_data, max_error, vrange, cuts, flux_cut, rand_mask)
+    velo_plot = np.ma.masked_array(all_data['velo_data'], mask=~good_v)
+    print("total number of points used:", len(all_data['velo_data'][good_v]))
+    fig, ax = plt.subplots(nrows=1,ncols=1,figsize = (10,8)) 
+    ax.plot(Cx, Cy, marker="X", color="k", markersize=10,linestyle="None")
+    r = rkpc/res
+    circle= plt.Circle((Cx, Cy), radius= r, color='k', ls='--', fill=False)
+    ax.add_artist(circle)
+    vminimum = np.nanmin(velo_plot)
+    vmaximum = np.nanmax(velo_plot) 
+    im = ax.imshow(velo_plot, cmap="Spectral_r")
+    # calculate width/height of image
+    cb=plt.colorbar(im, ax=ax,fraction=hcbfrac, pad=0.05,orientation='horizontal')
+    cb.ax.tick_params(axis='x', direction='in')
+    cb.set_label("line-of-sight velocity (km/s)",size=22)
+    ax.set_xlim(xpl/res,xpu/res)
+    ax.set_ylim(ypu/res,ypl/res)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    ax.invert_yaxis()
+    ax.tick_params(which='both',direction='in')
+    # adding custom scale bar
+    scale = 10#10/res/2
+    scaleres = scale*0.2 # for MUSE
+    plt.errorbar( 250, 20, xerr=scale, color='k', capsize=5)
+    #plt.text( 250, 28, r'%.1f $^{\prime\prime}$'%scaleres,  horizontalalignment='center', verticalalignment='top')
+    plt.text( 250, 15, r'%.1f kpc'%(scaleres/res*0.2),  horizontalalignment='center', verticalalignment='top')
+    plt.text(20,230,gname,size=18)
+    plt.tight_layout()
+    plt.savefig(maskmap)
+    plt.show()
+
+    return
+
+def xray_plotter(gname,res):
     impath = '../X-ray images/'
     outpath = 'Chandra/'
     if not os.path.exists(outpath):
         os.mkdir(outpath)
     outpath += gname+'_xray.pdf'
-    fn = impath+inp.get_xray_file(gname)
+    fname, xlab, ylab, xpl, xpu, ypl, ypu = inp.get_xray_file(gname)
+    fn = impath + fname
     xray = fits.open(fn)
     xray_data = xray[0].data
     xray.close()
     fig, ax = plt.subplots(nrows=1,ncols=1,figsize = (10,8)) 
-    iminimum = np.nanmin(xray_data)
+    iminimum = 1e-8#np.nanmin(xray_data)
     imaximum = np.nanmax(xray_data)
-    print(iminimum, imaximum)
     im = ax.imshow(xray_data,vmin=iminimum, vmax=imaximum, cmap="Spectral_r")
+    y_labels = ylab
+    y_locs = y_labels/res
+    x_labels = xlab
+    x_locs = x_labels/res
+    ax.set_xlim(xpl/res,xpu/res)
+    ax.set_ylim(ypu/res,ypl/res)
+    ax.set_xticks(x_locs)
+    ax.set_yticks(y_locs)
+    ax.set_xticklabels(x_labels)
+    ax.set_yticklabels(y_labels)
     #ax.set_xlabel("x (kpc)")
     #ax.set_ylabel("y (kpc)")
-    ax.set_xlim(1500,2500)
-    ax.set_ylim(2000,3000)
+    #ax.set_xlim(1500,2500)
+    #ax.set_ylim(2000,3000)
     ax.invert_yaxis()
     ax.tick_params(which='both',direction='in')
     cb = plt.colorbar(im, ax=ax,fraction=0.040, pad=0.1, orientation = 'horizontal')

@@ -13,6 +13,9 @@ from astropy.io import fits
 def get_xray_file(gname):
     if gname=='2A0335':
         fn = '2A0335_0.5-2.0_flux.fits'
+        xlab = np.array([250,300])
+        ylab = np.array([350,])
+        xpl, xpu, ypl, ypu = 250,325,325,375
     if gname=='Centaurus':
         fn = 'Centaurus_0.5-2.0_flux.fits'
     if gname=='A1795':
@@ -30,7 +33,7 @@ def get_xray_file(gname):
     if gname=='S1101':
         fn = 'AS1101_0.5-2.0_flux.fits'
 
-    return fn
+    return fn,xlab,ylab,xpl,xpu,ypl,ypu
 
 def get_sys_params(gname, telescope, pltmap):
     if telescope=='MUSE':
@@ -59,7 +62,7 @@ def get_sys_params(gname, telescope, pltmap):
                            'ra':'03:38:40.54612', 'dec':'+09:58:12.1373', 'res':0.700, 'nx':360, 'ny':363,
                            'ylab':np.array([10,20,30]), 'xlab':np.array([0,10,20,30,40]), 'vsfbin':200,
                            'msk_sz':70000, 'rkpc':5, 'xpl':0, 'xpu':40, 'ypl':0, 'ypu':35, 
-                           'cbfrac':0.040, 'one_third':42, 'half':25, 'vsfyl':10, 'vsfyu':300, 
+                           'cbfrac':0.040, 'hcbfrac':0.049,'one_third':42, 'half':25, 'vsfyl':10, 'vsfyu':300, 
                            'histulim':80, 'sepbin':300, 'fluxmapfn':'2A0335_Halpha_flux.fits','flcut':250}
             if pltmap=='flux':
                 sys_par = {'fluxmapfn':'2A0335_Halpha_flux.fits', 'flcut':250, 'ra':'03:38:40.54612', 

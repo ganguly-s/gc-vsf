@@ -52,7 +52,7 @@ if telescope=='MUSE':
         rkpc = sysparam['rkpc']
         xpl, xpu = sysparam['xpl'], sysparam['xpu']
         ypl, ypu = sysparam['ypl'], sysparam['ypu']
-        cbfrac = sysparam['cbfrac']
+        cbfrac,hcbfrac = sysparam['cbfrac'], sysparam['hcbfrac']
         one_third, half = sysparam['one_third'], sysparam['half']
         vsfyl, vsfyu, vsfbin = sysparam['vsfyl'], sysparam['vsfyu'], sysparam['vsfbin']
         histulim, sepbin = sysparam['histulim'], sysparam['sepbin']
@@ -69,7 +69,7 @@ if telescope=='MUSE':
         flux.close()
         Cx, Cy = gal_center(fnvel)
         # setting up for plots
-        flux_cut = False
+        flux_cut = True
         rand_mask = False
         if flux_cut and rand_mask:
             cuts = [msk_sz, flcut]
@@ -82,7 +82,7 @@ if telescope=='MUSE':
         # Choosing the type of mask to be applied to data, error cut is mandatory, although it barely has an effect
         alldata = {'gname':gname,'velo_data':velo_data, 'error_data':error_data, 'flux_data':flux_data,
                    'Cx':Cx,'Cy':Cy,'rkpc':rkpc,'res':res,'ylab':ylab,'xlab':xlab,
-                    'xpl':xpl, 'xpu':xpu, 'ypl':ypl, 'ypu':ypu, 'cbfrac':cbfrac}
+                   'xpl':xpl, 'xpu':xpu, 'ypl':ypl, 'ypu':ypu, 'cbfrac':cbfrac,'hcbfrac':hcbfrac}
         #plotter.plot_velo_data(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
         # good_v = mask.apply_mask(alldata, max_error, 2000, cuts, flux_cut, rand_mask)
         # alldata['good_v'] = good_v
@@ -95,7 +95,8 @@ if telescope=='MUSE':
         #b1, b2 = 2.5, 5    
         #pars1, stdevs1, pars2, stdevs2 = mask.brokenpowerlaw(telescope,gname,b1,b2)
         #plotter.bplplotter(telescope,gname,vsfyl,vsfyu,one_third,half,pars1,stdevs1,pars2,stdevs2,b1,b2)
-        plotter.xray_plotter(gname)
+        #plotter.xray_plotter(gname,res)
+        plotter.velo_data_panel(fnvel,alldata, max_error, 2000, cuts, flux_cut, rand_mask)
     if pltmap=='flux':
         fnflux = 'inputs/'+sysparam['fluxmapfn']
         flcut = sysparam['flcut']
